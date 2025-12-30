@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCE Inter Department Sports Tournament 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header & Banner */
+        .header-banner {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: slideDown 0.6s ease-out;
+        }
+
+        .header-banner h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .header-banner p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            letter-spacing: 0.5px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Section Spacing */
+        section {
+            margin: 50px 0;
+            padding: 40px 0;
+        }
+
+        /* Section Titles */
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 40px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #ffd93d);
+            border-radius: 2px;
+        }
+
+        /* Top 3 Leaderboard */
+        .leaderboard-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .leaderboard-item {
+            text-align: center;
+            padding: 30px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            transition: all 0.3s ease;
+            border: 3px solid #ddd;
+            position: relative;
+        }
+
+        .leaderboard-item.rank-1 {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            color: white;
+            border: 3px solid #ffb84d;
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 184, 77, 0.4);
+        }
+
+        .leaderboard-item.rank-2 {
+            background: linear-gradient(135deg, #e0e0e0 0%, #a8a8a8 100%);
+            border: 3px solid #888;
+        }
+
+        .leaderboard-item.rank-3 {
+            background: linear-gradient(135deg, #e8d5c4 0%, #d4a574 100%);
+            border: 3px solid #d4a574;
+        }
+
+        .leaderboard-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .rank-badge {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.1);
+            color: #333;
+            line-height: 50px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .leaderboard-item.rank-1 .rank-badge {
+            color: white;
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .leaderboard-dept-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: inherit;
+        }
+
+        .leaderboard-points {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: inherit;
+        }
+
+        /* Departments Grid */
+        .departments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .dept-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 5px solid #667eea;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dept-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .dept-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .dept-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .dept-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1e3c72;
+            margin-bottom: 15px;
+        }
+
+        .dept-points {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .dept-label {
+            font-size: 0.9rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .view-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .view-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            overflow-y: auto;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal.show {
+            display: block;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 30px auto;
+            padding: 40px;
+            border-radius: 15px;
+            width: 95%;
+            max-width: 900px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.4s ease-out;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .modal-header h2 {
+            font-size: 2rem;
+            color: #1e3c72;
+            margin: 0;
+        }
+
+        .close-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .close-btn:hover {
+            background: #ff5252;
+            transform: scale(1.05);
+        }
+
+        /* Sports Table */
+        .sports-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sports-table thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .sports-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sports-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .sports-table tbody tr {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .sports-table tbody tr:hover {
+            background-color: #f5f7fa;
+            transform: translateX(5px);
+        }
+
+        .sports-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Fixtures & Results Section */
+        .fixtures-container {
+            display: none;
+            margin-top: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .fixtures-container.show {
+            display: block;
+            animation: slideDown 0.4s ease-out;
+        }
+
+        .fixtures-title {
+            font-size: 1.5rem;
+            color: #1e3c72;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .fixtures-text {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            line-height: 1.8;
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: #1e3c72;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 60px;
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer p {
+            margin: 8px 0;
+            font-size: 0.95rem;
+        }
+
+        .footer a {
+            color: #ffd93d;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+            color: #ffff66;
+        }
+
+        /* Animations */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-banner h1 {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .departments-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .leaderboard-container {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .leaderboard-item.rank-1 {
+                grid-column: 1;
+            }
+
+            .modal-content {
+                width: 90%;
+                padding: 20px;
+            }
+
+            .sports-table th,
+            .sports-table td {
+                padding: 10px;
+                font-size: 0.85rem;
+            }
+
+            .modal-header h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-banner {
+                padding: 40px 15px;
+            }
+
+            .header-banner h1 {
+                font-size: 1.5rem;
+            }
+
+            .header-banner p {
+                font-size: 1rem;
+            }
+
+            section {
+                margin: 30px 0;
+                padding: 20px 0;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .dept-points {
+                font-size: 2rem;
+            }
+
+            .leaderboard-points {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Banner -->
+    <div class="header-banner">
+        <h1>🏆 Welcome to TCE Inter Department Tourney 2026 🏆</h1>
+        <p>Celebrating Excellence in Sports & Sportsmanship</p>
+    </div>
+
+    <div class="container">
+        <!-- Top 3 Leaderboard Section -->
+        <section id="leaderboard-section">
+            <h2 class="section-title">Top 3 Champions</h2>
+            <div class="leaderboard-container" id="leaderboard">
+                <!-- Dynamically populated -->
+            </div>
+        </section>
+
+        <!-- All Departments Section -->
+        <section id="departments-section">
+            <h2 class="section-title">All Departments</h2>
+            <div class="departments-grid" id="departments-grid">
+                <!-- Dynamically populated -->
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal for Department Details -->
+    <div id="departmentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalDeptName"></h2>
+                <button class="close-btn" onclick="closeDepartmentModal()">✕ Close</button>
+            </div>
+
+            <!-- Sports-wise Scores Table -->
+            <table class="sports-table" id="sportsTable">
+                <thead>
+                    <tr>
+                        <th>Sport Name</th>
+                        <th>Men's Points</th>
+                        <th>Women's Points</th>
+                        <th>Total Points</th>
+                    </tr>
+                </thead>
+                <tbody id="sportsTableBody">
+                    <!-- Dynamically populated -->
+                </tbody>
+            </table>
+
+            <!-- Fixtures & Results Section -->
+            <div class="fixtures-container" id="fixturesContainer">
+                <h3 class="fixtures-title">Fixtures & Results Summary</h3>
+                <div class="fixtures-text" id="fixturesText">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p><strong>TCE Inter Department Sports Tournament 2026</strong></p>
+        <p>Designed and developed by <strong>Navaneet SV</strong></p>
+        <p>For any discrepancies or technical issues, please contact: <a href="mailto:navaneet@student.tce.edu">navaneet@student.tce.edu</a></p>
+    </div>
+
+    <script>
+        // ============================================
+        // 📝 EDITABLE DATA - START HERE
+        // ============================================
+        // This is the ONLY place you need to edit to update scores and sports data
+        // Simply modify the values below and refresh the page to see changes
+
+        const sportsData = {
+            // EDITABLE: Add or remove sports here
+            sports: [
+                "Athletics",
+                "Badminton",
+                "Ball Badminton",
+                "Basketball",
+                "Chess",
+                "Cricket",
+                "Football",
+                "Handball",
+                "Hockey",
+                "Judo",
+                "Kabaddi",
+                "Kho-Kho",
+                "Tennis",
+                "Table Tennis",
+                "Volleyball"
+            ],
+
+            // EDITABLE: Department data with scores
+            // Format: "Department Name": { shortName: "Short Code", sports: { "Sport Name": { mens: points, womens: points } } }
+            departments: {
+                "Civil": {
+                    shortName: "CE",
+                    sports: {
+                        "Athletics": { mens: 50, womens: 40 },
+                        "Badminton": { mens: 30, womens: 25 },
+                        "Ball Badminton": { mens: 20, womens: 15 },
+                        "Basketball": { mens: 35, womens: 30 },
+                        "Chess": { mens: 25, womens: 25 },
+                        "Cricket": { mens: 40, womens: 0 },
+                        "Football": { mens: 45, womens: 0 },
+                        "Handball": { mens: 25, womens: 20 },
+                        "Hockey": { mens: 30, womens: 25 },
+                        "Judo": { mens: 20, womens: 15 },
+                        "Kabaddi": { mens: 35, womens: 30 },
+                        "Kho-Kho": { mens: 25, womens: 25 },
+                        "Tennis": { mens: 20, womens: 20 },
+                        "Table Tennis": { mens: 30, womens: 25 },
+                        "Volleyball": { mens: 35, womens: 30 }
+                    },
+                    summary: "Civil Engineering has shown excellent performance across multiple sports. Notable victories in Athletics, Football, and strong participation in team events."
+                },
+                "CSE": {
+                    shortName: "CS",
+                    sports: {
+                        "Athletics": { mens: 45, womens: 35 },
+                        "Badminton": { mens: 40, womens: 35 },
+                        "Ball Badminton": { mens: 25, womens: 20 },
+                        "Basketball": { mens: 40, womens: 35 },
+                        "Chess": { mens: 50, womens: 45 },
+                        "Cricket": { mens: 50, womens: 0 },
+                        "Football": { mens: 40, womens: 0 },
+                        "Handball": { mens: 30, womens: 25 },
+                        "Hockey": { mens: 35, womens: 30 },
+                        "Judo": { mens: 25, womens: 20 },
+                        "Kabaddi": { mens: 40, womens: 35 },
+                        "Kho-Kho": { mens: 30, womens: 28 },
+                        "Tennis": { mens: 25, womens: 25 },
+                        "Table Tennis": { mens: 35, womens: 30 },
+                        "Volleyball": { mens: 40, womens: 35 }
+                    },
+                    summary: "Computer Science & Engineering leads with exceptional performance in Chess and strong showings in Cricket and other team sports. Competitive across all categories."
+                },
+                "CSBS": {
+                    shortName: "CB",
+                    sports: {
+                        "Athletics": { mens: 35, womens: 30 },
+                        "Badminton": { mens: 25, womens: 20 },
+                        "Ball Badminton": { mens: 15, womens: 10 },
+                        "Basketball": { mens: 30, womens: 28 },
+                        "Chess": { mens: 30, womens: 28 },
+                        "Cricket": { mens: 35, womens: 0 },
+                        "Football": { mens: 30, womens: 0 },
+                        "Handball": { mens: 20, womens: 18 },
+                        "Hockey": { mens: 25, womens: 22 },
+                        "Judo": { mens: 18, womens: 15 },
+                        "Kabaddi": { mens: 30, womens: 25 },
+                        "Kho-Kho": { mens: 22, womens: 20 },
+                        "Tennis": { mens: 18, womens: 16 },
+                        "Table Tennis": { mens: 25, womens: 22 },
+                        "Volleyball": { mens: 30, womens: 28 }
+                    },
+                    summary: "Cyber Security has demonstrated balanced performance across sports with consistent participation in all events."
+                },
+                "ECE": {
+                    shortName: "EC",
+                    sports: {
+                        "Athletics": { mens: 40, womens: 35 },
+                        "Badminton": { mens: 35, womens: 30 },
+                        "Ball Badminton": { mens: 22, womens: 18 },
+                        "Basketball": { mens: 38, womens: 32 },
+                        "Chess": { mens: 28, womens: 26 },
+                        "Cricket": { mens: 45, womens: 0 },
+                        "Football": { mens: 42, womens: 0 },
+                        "Handball": { mens: 28, womens: 23 },
+                        "Hockey": { mens: 32, womens: 28 },
+                        "Judo": { mens: 22, womens: 18 },
+                        "Kabaddi": { mens: 38, womens: 32 },
+                        "Kho-Kho": { mens: 28, womens: 25 },
+                        "Tennis": { mens: 22, womens: 20 },
+                        "Table Tennis": { mens: 32, womens: 28 },
+                        "Volleyball": { mens: 38, womens: 35 }
+                    },
+                    summary: "Electronics & Communication Engineering exhibits strong performance particularly in Cricket, Football, and Volleyball. Well-rounded team participation."
+                },
+                "EE": {
+                    shortName: "EE",
+                    sports: {
+                        "Athletics": { mens: 38, womens: 32 },
+                        "Badminton": { mens: 32, womens: 28 },
+                        "Ball Badminton": { mens: 20, womens: 15 },
+                        "Basketball": { mens: 35, womens: 30 },
+                        "Chess": { mens: 26, womens: 24 },
+                        "Cricket": { mens: 42, womens: 0 },
+                        "Football": { mens: 38, womens: 0 },
+                        "Handball": { mens: 26, womens: 22 },
+                        "Hockey": { mens: 30, womens: 26 },
+                        "Judo": { mens: 20, womens: 16 },
+                        "Kabaddi": { mens: 35, womens: 30 },
+                        "Kho-Kho": { mens: 26, womens: 23 },
+                        "Tennis": { mens: 20, womens: 18 },
+                        "Table Tennis": { mens: 30, womens: 26 },
+                        "Volleyball": { mens: 35, womens: 32 }
+                    },
+                    summary: "Electrical Engineering has shown solid performance with consistent results across all sports events. Strong showing in team-based competitions."
+                },
+                "IT": {
+                    shortName: "IT",
+                    sports: {
+                        "Athletics": { mens: 48, womens: 42 },
+                        "Badminton": { mens: 38, womens: 32 },
+                        "Ball Badminton": { mens: 26, womens: 22 },
+                        "Basketball": { mens: 42, womens: 38 },
+                        "Chess": { mens: 35, womens: 32 },
+                        "Cricket": { mens: 48, womens: 0 },
+                        "Football": { mens: 46, womens: 0 },
+                        "Handball": { mens: 32, womens: 28 },
+                        "Hockey": { mens: 38, womens: 34 },
+                        "Judo": { mens: 26, womens: 22 },
+                        "Kabaddi": { mens: 42, womens: 38 },
+                        "Kho-Kho": { mens: 32, womens: 30 },
+                        "Tennis": { mens: 26, womens: 24 },
+                        "Table Tennis": { mens: 38, womens: 34 },
+                        "Volleyball": { mens: 42, womens: 40 }
+                    },
+                    summary: "Information Technology department demonstrates exceptional prowess with high scores across Athletics, Cricket, and robust performance in all other events. Consistent champions."
+                },
+                "MECT": {
+                    shortName: "ME",
+                    sports: {
+                        "Athletics": { mens: 42, womens: 36 },
+                        "Badminton": { mens: 34, womens: 28 },
+                        "Ball Badminton": { mens: 23, womens: 19 },
+                        "Basketball": { mens: 38, womens: 34 },
+                        "Chess": { mens: 30, womens: 28 },
+                        "Cricket": { mens: 44, womens: 0 },
+                        "Football": { mens: 40, womens: 0 },
+                        "Handball": { mens: 29, womens: 25 },
+                        "Hockey": { mens: 34, womens: 30 },
+                        "Judo": { mens: 23, womens: 19 },
+                        "Kabaddi": { mens: 38, womens: 34 },
+                        "Kho-Kho": { mens: 29, womens: 26 },
+                        "Tennis": { mens: 23, womens: 21 },
+                        "Table Tennis": { mens: 34, womens: 30 },
+                        "Volleyball": { mens: 38, womens: 36 }
+                    },
+                    summary: "Mechanical Engineering showcases strong performance across all sporting events with particular strength in Athletics, Cricket, and team sports. Well-balanced team."
+                },
+                "MECH": {
+                    shortName: "MH",
+                    sports: {
+                        "Athletics": { mens: 46, womens: 40 },
+                        "Badminton": { mens: 36, womens: 31 },
+                        "Ball Badminton": { mens: 25, womens: 20 },
+                        "Basketball": { mens: 40, womens: 36 },
+                        "Chess": { mens: 32, womens: 30 },
+                        "Cricket": { mens: 46, womens: 0 },
+                        "Football": { mens: 44, womens: 0 },
+                        "Handball": { mens: 31, womens: 26 },
+                        "Hockey": { mens: 36, womens: 32 },
+                        "Judo": { mens: 25, womens: 20 },
+                        "Kabaddi": { mens: 40, womens: 36 },
+                        "Kho-Kho": { mens: 31, womens: 28 },
+                        "Tennis": { mens: 25, womens: 22 },
+                        "Table Tennis": { mens: 36, womens: 32 },
+                        "Volleyball": { mens: 40, womens: 38 }
+                    },
+                    summary: "Mechanical Engineering (MECH) demonstrates outstanding performance with top scores in Athletics, Cricket, and consistent excellence across all competitions. Strong contenders."
+                },
+                "Data": {
+                    shortName: "DA",
+                    sports: {
+                        "Athletics": { mens: 44, womens: 38 },
+                        "Badminton": { mens: 33, womens: 27 },
+                        "Ball Badminton": { mens: 24, womens: 19 },
+                        "Basketball": { mens: 37, womens: 32 },
+                        "Chess": { mens: 40, womens: 38 },
+                        "Cricket": { mens: 43, womens: 0 },
+                        "Football": { mens: 41, womens: 0 },
+                        "Handball": { mens: 28, womens: 23 },
+                        "Hockey": { mens: 33, womens: 28 },
+                        "Judo": { mens: 24, womens: 19 },
+                        "Kabaddi": { mens: 37, womens: 32 },
+                        "Kho-Kho": { mens: 28, womens: 25 },
+                        "Tennis": { mens: 24, womens: 21 },
+                        "Table Tennis": { mens: 33, womens: 28 },
+                        "Volleyball": { mens: 37, womens: 34 }
+                    },
+                    summary: "Data Science department exhibits competitive performance with notable strength in Chess and good representation across all sports. Growing athletic department."
+                },
+                "T'Seda": {
+                    shortName: "TS",
+                    sports: {
+                        "Athletics": { mens: 36, womens: 30 },
+                        "Badminton": { mens: 28, womens: 23 },
+                        "Ball Badminton": { mens: 18, womens: 14 },
+                        "Basketball": { mens: 32, womens: 28 },
+                        "Chess": { mens: 26, womens: 24 },
+                        "Cricket": { mens: 38, womens: 0 },
+                        "Football": { mens: 36, womens: 0 },
+                        "Handball": { mens: 22, womens: 18 },
+                        "Hockey": { mens: 28, womens: 24 },
+                        "Judo": { mens: 18, womens: 14 },
+                        "Kabaddi": { mens: 32, womens: 28 },
+                        "Kho-Kho": { mens: 22, womens: 20 },
+                        "Tennis": { mens: 18, womens: 16 },
+                        "Table Tennis": { mens: 28, womens: 24 },
+                        "Volleyball": { mens: 32, womens: 30 }
+                    },
+                    summary: "Tamil Siddha Educational Development Academy (T'Seda) participates actively across all sports with consistent performance and good team spirit."
+                }
+            }
+        };
+
+        // ============================================
+        // 🚀 APPLICATION CODE - DO NOT MODIFY
+        // ============================================
+
+        // Calculate total points for each department
+        function calculateTotalPoints(deptData) {
+            let total = 0;
+            Object.values(deptData.sports).forEach(sport => {
+                total += (sport.mens || 0) + (sport.womens || 0);
+            });
+            return total;
+        }
+
+        // Get sorted departments by total points
+        function getSortedDepartments() {
+            const depts = [];
+            Object.keys(sportsData.departments).forEach(deptName => {
+                const deptData = sportsData.departments[deptName];
+                depts.push({
+                    name: deptName,
+                    shortName: deptData.shortName,
+                    total: calculateTotalPoints(deptData),
+                    data: deptData
+                });
+            });
+            return depts.sort((a, b) => b.total - a.total);
+        }
+
+        // Render leaderboard
+        function renderLeaderboard() {
+            const sorted = getSortedDepartments();
+            const leaderboardDiv = document.getElementById('leaderboard');
+            leaderboardDiv.innerHTML = '';
+
+            sorted.slice(0, 3).forEach((dept, index) => {
+                const rankClass = index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : 'rank-3';
+                const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉';
+                
+                const item = document.createElement('div');
+                item.className = `leaderboard-item ${rankClass}`;
+                item.innerHTML = `
+                    <div class="rank-badge">${medal}</div>
+                    <div class="leaderboard-dept-name">${dept.name}</div>
+                    <div class="leaderboard-points">${dept.total}</div>
+                    <div class="dept-label">Total Points</div>
+                `;
+                leaderboardDiv.appendChild(item);
+            });
+        }
+
+        // Render departments grid
+        function renderDepartmentsGrid() {
+            const sorted = getSortedDepartments();
+            const gridDiv = document.getElementById('departments-grid');
+            gridDiv.innerHTML = '';
+
+            sorted.forEach(dept => {
+                const card = document.createElement('div');
+                card.className = 'dept-card';
+                card.innerHTML = `
+                    <div class="dept-name">${dept.name}</div>
+                    <div class="dept-label">Total Points Earned</div>
+                    <div class="dept-points">${dept.total}</div>
+                    <button class="view-btn" data-dept="${dept.name}" onclick="openDepartmentModal(this.dataset.dept)">View Details →</button>
+                `;
+                gridDiv.appendChild(card);
+            });
+        }
+
+        // Open department modal
+        function openDepartmentModal(deptName) {
+            // Handle dataset attribute (string passed correctly even with quotes)
+            const dept = sportsData.departments[deptName];
+            const modal = document.getElementById('departmentModal');
+            
+            document.getElementById('modalDeptName').textContent = deptName;
+            
+            // Populate sports table
+            const tbody = document.getElementById('sportsTableBody');
+            tbody.innerHTML = '';
+            
+            sportsData.sports.forEach(sport => {
+                const sportData = dept.sports[sport];
+                if (sportData) {
+                    const mens = sportData.mens || 0;
+                    const womens = sportData.womens || 0;
+                    const total = mens + womens;
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><strong>${sport}</strong></td>
+                        <td>${mens}</td>
+                        <td>${womens}</td>
+                        <td><strong>${total}</strong></td>
+                    `;
+                    row.onclick = () => showFixtures(deptName, sport);
+                    tbody.appendChild(row);
+                }
+            });
+
+            // Set fixtures summary
+            document.getElementById('fixturesText').textContent = dept.summary;
+
+            modal.classList.add('show');
+        }
+
+        // Close modal
+        function closeDepartmentModal() {
+            document.getElementById('departmentModal').classList.remove('show');
+            document.getElementById('fixturesContainer').classList.remove('show');
+        }
+
+        // Show fixtures for a specific sport
+        function showFixtures(deptName, sportName) {
+            const fixturesContainer = document.getElementById('fixturesContainer');
+            const fixturesText = document.getElementById('fixturesText');
+            
+            const dept = sportsData.departments[deptName];
+            const summary = `${deptName} - ${sportName}: ${dept.summary}`;
+            
+            fixturesText.textContent = summary;
+            fixturesContainer.classList.add('show');
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('departmentModal');
+            if (event.target === modal) {
+                closeDepartmentModal();
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            renderLeaderboard();
+            renderDepartmentsGrid();
+        });
+    </script>
+</body>
+</html>

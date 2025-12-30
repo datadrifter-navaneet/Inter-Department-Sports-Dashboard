@@ -32,7 +32,8 @@ Tools: No external frameworks (lightweight for college events)
 
 Getting Started
 ---------------
-1. Clone the repo: git clone https://github.com/yourusername/tce-sports-dashboard.git
+1. Clone the repo: git clone https://github.com/yourusername/Inter-Department-Sports-Dashboard
+.git
 2. Open index.html in any browser
 3. No setup required – fully static!
 
